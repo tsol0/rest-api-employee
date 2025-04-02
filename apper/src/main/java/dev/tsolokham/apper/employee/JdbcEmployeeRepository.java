@@ -49,7 +49,22 @@ public class JdbcEmployeeRepository {
                         employee.streetAddress(), employee.city(), employee.telephone(),
                         employee.hireDate(), employee.title(), employee.salary(),
                         employee.birthDate(), employee.age()), employeeID).update();
+
         Assert.state(updated== 1, "Failed to update employee record");
+    }
+
+
+    public void delete(Integer employeeID){
+        var updated = jdbcClient.sql("delete from run where id = :id")
+                .param("employeeID", employeeID).update();
+
+        Assert.state(updated == 1, "Failed to delete employee record");
+    }
+
+
+    void saveAll(List<Employee> employees){
+//        employees.stream().forEach(this::create);
+        employees.forEach(this::create);
     }
 
 }
