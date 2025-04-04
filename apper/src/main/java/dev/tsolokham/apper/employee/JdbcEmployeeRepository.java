@@ -1,12 +1,14 @@
 package dev.tsolokham.apper.employee;
 
 import org.springframework.jdbc.core.simple.JdbcClient;
+import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
 import java.util.List;
 import java.util.Optional;
 
-public class JdbcEmployeeRepository {
+@Repository
+public class JdbcEmployeeRepository implements  EmployeeRepository{
     private final JdbcClient jdbcClient;
 
 
@@ -62,7 +64,12 @@ public class JdbcEmployeeRepository {
     }
 
 
-    void saveAll(List<Employee> employees){
+    public int totalEmployees() {
+        return jdbcClient.sql("select * from employee").query().listOfRows().size();
+    }
+
+
+    public void saveAll(List<Employee> employees){
 //        employees.stream().forEach(this::create);
         employees.forEach(this::create);
     }
